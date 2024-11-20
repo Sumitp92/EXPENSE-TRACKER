@@ -1,19 +1,22 @@
 const express = require('express');
 const sequelize = require('./model/expenses'); 
+const bodyParser = require('body-parser');
 const routes = require('./routes/router'); 
 const path = require('path');
 const app = express();
-
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use('/api', routes); 
+app.use('/api', routes);
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-sequelize.sync()
+sequelize.sync({ force: false })
     .then(() => {
         app.listen(3000, () => {
             console.log('Server running on port 3000');
